@@ -36,7 +36,15 @@ class Box:
         self.all_box_colors = {number: i for i,number in enumerate(shades, start=1)} #We start from 1 since box numbered 0 should not exist since the number describes the health of the box
         return self.all_box_colors
     
-    def save_boxes(self, path, name):
+    def create_folder(self, folder_name):
+        try:
+            os.mkdir(folder_name)
+            print(f"Folder '{folder_name}' created successfully.")
+        except FileExistsError:
+            return
+
+    
+    def save_boxes(self, path, file_name):
         for i,color in enumerate(self.all_box_colors, start=1):
             image = Image.new("RGB", (self.box_width, self.box_height), "black")
             draw = ImageDraw.Draw(image)
@@ -59,7 +67,8 @@ class Box:
             draw.text((text_x, text_y), text, fill=color, font=font)
 
             # Save the image
-            image.save(f"{path}{name}{i}.png")
+            image.save(f"{path}{file_name}{i}.png")
+
     
     def clear_file(self, path):
         contents = os.listdir(path)
